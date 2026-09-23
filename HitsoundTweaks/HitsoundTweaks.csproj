@@ -1,11 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <ImportBSMTTargets>true</ImportBSMTTargets>
+    <BSMTProjectType>BSIPA</BSMTProjectType>
+    <GameDirectory>D:\BSManager\BSInstances\1.45.1</GameDirectory>
+    <CopyPDB>false</CopyPDB>
+    <DisableCopyToGame>false</DisableCopyToGame>
     <TargetFramework>net472</TargetFramework>
     <LangVersion>12</LangVersion>
     <Nullable>disable</Nullable>
     <OutputType>Library</OutputType>
     <LocalRefsDir Condition="Exists('..\Refs')">..\Refs</LocalRefsDir>
-    <GameDirectory>$(LocalRefsDir)</GameDirectory>
     <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
