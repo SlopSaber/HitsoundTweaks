@@ -90,16 +90,20 @@ internal class Hitsound_Reliability_Patches : IAffinity
         var noteTime = ____startDSPTime + ____aheadTime;
         if (!(____noteWasCut && !____goodCut)) // note hasn't been bad cut
         {
+            int priority;
             if (dspTime - noteTime > 0)
             {
                 const float priorityFalloff = 384;
-                ____audioSource.priority = Mathf.Clamp(32 + Mathf.RoundToInt((float)(dspTime - noteTime) * priorityFalloff), 32, 127);
+                priority = Mathf.Clamp(32 + Mathf.RoundToInt((float)(dspTime - noteTime) * priorityFalloff), 32, 127);
             }
             else
             {
                 const float priorityRampup = 192;
-                ____audioSource.priority = Mathf.Clamp(32 + Mathf.RoundToInt((float)(noteTime - dspTime) * priorityRampup), 32, 128);
+                priority = Mathf.Clamp(32 + Mathf.RoundToInt((float)(noteTime - dspTime) * priorityRampup), 32, 128);
             }
+
+            if (____audioSource.priority != priority)
+                ____audioSource.priority = priority;
         }
     }
 }
