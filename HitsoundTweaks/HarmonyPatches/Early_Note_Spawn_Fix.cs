@@ -16,7 +16,12 @@ internal class Early_Note_Spawn_Fix : IAffinity
     [AffinityPatch(typeof(NoteCutSoundEffectManager), nameof(NoteCutSoundEffectManager.HandleNoteWasSpawned))]
     private bool NoteSpawnPrefix(NoteController noteController, AudioTimeSyncController ____audioTimeSyncController)
     {
-        if (____audioTimeSyncController.state != AudioTimeSyncController.State.Playing)
+        if (____audioTimeSyncController == null)
+        {
+            return true;
+        }
+
+        if (____audioTimeSyncController.state != IAudioTimeSource.State.Playing)
         {
             initQueue.Add(noteController);
             return false;
@@ -28,7 +33,13 @@ internal class Early_Note_Spawn_Fix : IAffinity
     [AffinityPatch(typeof(NoteCutSoundEffectManager), nameof(NoteCutSoundEffectManager.LateUpdate))]
     private void LateUpdatePrefix(AudioTimeSyncController ____audioTimeSyncController, NoteCutSoundEffectManager __instance)
     {
-        if (____audioTimeSyncController.state == AudioTimeSyncController.State.Playing && initQueue.Count > 0)
+        if (____audioTimeSyncController == null || __instance == null)
+        {
+            initQueue.Clear();
+            return;
+        }
+
+        if (____audioTimeSyncController.state == IAudioTimeSource.State.Playing && initQueue.Count > 0)
         {
             foreach (var item in initQueue)
             {
